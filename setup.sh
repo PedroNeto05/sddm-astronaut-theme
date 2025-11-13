@@ -74,13 +74,13 @@ spin() {
 
 # Install gum if missing
 install_gum() {
-    local mgr=$(for m in pacman xbps dnf zypper apt; do command -v $m &>/dev/null && { echo ${m%%-*}; break; }; done)
+    local mgr=$(for m in pacman xbps-install dnf zypper apt; do command -v $m &>/dev/null && { echo ${m%%-*}; break; }; done)
 
     case $mgr in
         pacman) sudo pacman -S gum ;;
         dnf) sudo dnf install -y gum ;;
         zypper) sudo zypper install -y gum ;;
-        xbps) sudo xbps-install -y gum ;;
+        xbps-install) sudo xbps-install -y gum ;;
         # refrence https://github.com/basecamp/omakub/issues/222
         apt)
             sudo mkdir -p /etc/apt/keyrings
@@ -103,12 +103,12 @@ check_gum() {
 
 # Install dependencies
 install_deps() {
-    local mgr=$(for m in pacman xbps dnf zypper apt; do command -v $m &>/dev/null && { echo ${m%%-*}; break; }; done)
+    local mgr=$(for m in pacman xbps-install dnf zypper apt; do command -v $m &>/dev/null && { echo ${m%%-*}; break; }; done)
     info "Package manager: $mgr"
 
     case $mgr in
         pacman) sudo pacman --needed -S sddm qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg ;;
-        xbps) sudo xbps-install -y sddm qt6-svg qt6-virtualkeyboard qt6-multimedia ;;
+        xbps-install) sudo xbps-install -y sddm qt6-svg qt6-virtualkeyboard qt6-multimedia ;;
         dnf) sudo dnf install -y sddm qt6-qtsvg qt6-qtvirtualkeyboard qt6-qtmultimedia ;;
         zypper) sudo zypper install -y sddm libQt6Svg6 qt6-virtualkeyboard qt6-multimedia ;;
         apt) sudo apt update && sudo apt install -y sddm qt6-svg-dev qml6-module-qtquick-virtualkeyboard qt6-multimedia-dev ;;
